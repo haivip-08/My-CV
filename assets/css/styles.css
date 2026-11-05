@@ -1,57 +1,298 @@
 /* ==========================================================================
    PORTFOLIO CV – styles.css
-   Chiến lược: MOBILE-FIRST
-   - Mặc định (ngoài media query) = giao diện cho màn hình nhỏ nhất (~360px)
-   - @media (min-width: 768px)  → nâng cấp cho tablet
-   - @media (min-width: 1280px) → nâng cấp cho desktop
+   Chiến lược: MOBILE-FIRST + HIỆN ĐẠI, MÀU SẮC NỔI BẬT & ĐOM ĐÓM BAY
+   - Bảng màu sống động: Aurora Mesh, Indigo, Cyan, Sunset Pink, Emerald
+   - Hiệu ứng đom đóm bay lơ lửng lung linh (Pure CSS Fireflies)
+   - Tối ưu hiệu ứng hover từng thẻ kỹ năng, dự án mang màu sắc nhận diện riêng
+   - Đáp ứng chuẩn Responsive: Mobile (~360px) → Tablet (768px) → Desktop (1280px)
    ========================================================================== */
 
 /* ==========================================================================
    1. DESIGN TOKENS – biến hệ thống thị giác (màu, chữ, khoảng cách, bo góc)
-   Dùng custom properties để thay đổi tập trung, nhất quán toàn trang.
    ========================================================================== */
 :root {
-  /* --- Bảng màu --- */
-  --color-primary: #2563eb;      /* xanh thương hiệu */
-  --color-primary-dark: #1d4ed8;
-  --color-accent: #7c3aed;       /* tím nhấn */
-  --color-text: #1e293b;         /* chữ chính */
-  --color-text-soft: #64748b;    /* chữ phụ */
-  --color-bg: #fafafa;           /* nền trang */
-  --color-surface: #fef9fe;      /* nền vùng nhấn */
-  --color-border: #ebe9f1;       /* viền */
-  --color-chip: #eff6ff;         /* nền chip kỹ năng */
+  /* --- Bảng màu chính (Vibrant Modern Tech Palette) --- */
+  --color-primary: #4f46e5;         /* Indigo thương hiệu */
+  --color-primary-dark: #3730a3;    /* Indigo đậm */
+  --color-primary-light: #6366f1;   /* Indigo sáng */
+  --color-accent: #06b6d4;          /* Cyan tươi sáng */
+  --color-accent-purple: #8b5cf6;   /* Tím mộng mơ */
+  --color-accent-pink: #ec4899;     /* Hồng hoàng hôn */
+  --color-accent-amber: #f59e0b;    /* Vàng cam ấm áp */
+  --color-success: #10b981;         /* Xanh lá hoạt động */
+
+  --color-text: #0f172a;            /* Chữ chính (Slate 900) */
+  --color-text-soft: #475569;       /* Chữ phụ (Slate 600) */
+  --color-text-muted: #94a3b8;      /* Chữ mờ */
+
+  --color-bg: #f8fafc;              /* Nền trang sáng tinh tế */
+  --color-surface: #ffffff;         /* Nền thẻ trắng tinh khiết */
+  --color-surface-soft: #f1f5f9;    /* Nền khối phụ */
+  --color-border: #e2e8f0;          /* Viền nhẹ */
+  --color-border-hover: #cbd5e1;    /* Viền khi hover */
+  --color-border-subtle: rgba(99, 102, 241, 0.12); /* Viền màu đồng đều giữa các phần */
+  --color-chip: #eef2ff;            /* Nền chip kỹ năng */
+
+  /* --- Gradients đa sắc màu --- */
+  --grad-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  --grad-accent: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  --grad-sunset: linear-gradient(135deg, #4f46e5 0%, #a855f7 35%, #ec4899 70%, #f59e0b 100%);
+  --grad-gemini: linear-gradient(90deg, #4f46e5 0%, #06b6d4 100%);
+  --grad-tiktok: linear-gradient(90deg, #ec4899 0%, #8b5cf6 100%);
+  --grad-spotify: linear-gradient(90deg, #06b6d4 0%, #10b981 100%);
+  --grad-title-bar: linear-gradient(180deg, #06b6d4 0%, #4f46e5 50%, #ec4899 100%);
+  --grad-avatar-glow: linear-gradient(135deg, #4f46e5, #06b6d4, #ec4899, #f59e0b, #10b981);
 
   /* --- Typography --- */
-  --font-base: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-base: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --fs-xs: 0.75rem;    /* 12px */
   --fs-sm: 0.875rem;   /* 14px */
   --fs-base: 1rem;     /* 16px */
   --fs-lg: 1.125rem;   /* 18px */
-  --fs-h2: 1.5rem;     /* 24px */
-  --fs-h1: 2rem;       /* 32px (sẽ tăng ở desktop) */
-  --lh-base: 1.6;
+  --fs-xl: 1.25rem;    /* 20px */
+  --fs-h2: 1.625rem;   /* 26px */
+  --fs-h1: 2.25rem;    /* 36px (sẽ tăng ở tablet/desktop) */
+  --lh-base: 1.65;
 
-  /* --- Khoảng cách (spacing scale) --- */
-  --space-1: 0.5rem;
-  --space-2: 1rem;
-  --space-3: 1.5rem;
-  --space-4: 2rem;
-  --space-5: 3rem;
+  /* --- Spacing scale --- */
+  --space-1: 0.5rem;   /* 8px */
+  --space-2: 1rem;     /* 16px */
+  --space-3: 1.5rem;   /* 24px */
+  --space-4: 2.5rem;   /* 40px */
+  --space-5: 4rem;     /* 64px */
 
-  /* --- Bố cục --- */
+  /* --- Bo góc & Đổ bóng --- */
   --container-max: 1200px;
-  --radius: 12px;
   --radius-sm: 8px;
-  --shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 8px 24px rgba(15, 23, 42, 0.06);
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 12px 28px -4px rgba(15, 23, 42, 0.09), 0 6px 12px -4px rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 20px 35px -5px rgba(15, 23, 42, 0.12), 0 10px 15px -5px rgba(15, 23, 42, 0.05);
+  --shadow-primary: 0 8px 20px -4px rgba(79, 70, 229, 0.35);
+
+  /* --- Chuyển động (Transitions) --- */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ==========================================================================
-   2. CHUẨN HÓA BOX MODEL + RESET CƠ BẢN
+   2. HIỆU ỨNG ĐOM ĐÓM BAY LƠ LỬNG (PURE CSS FIREFLIES EFFECT)
+   ========================================================================== */
+.fireflies-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 80;
+  overflow: hidden;
+}
+
+.firefly {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 15%, #fef08a 45%, #a3e635 85%);
+  box-shadow:
+    0 0 8px 3px rgba(254, 240, 138, 0.95),
+    0 0 18px 6px rgba(163, 230, 53, 0.8),
+    0 0 32px 10px rgba(234, 179, 8, 0.4);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+/* Các quỹ đạo bay cong lượn tự nhiên mô phỏng đàn đom đóm trong đêm hè */
+@keyframes fireflyFloat1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.8);
+  }
+  25% {
+    transform: translate3d(40px, -55px, 0) scale(1.15);
+  }
+  50% {
+    transform: translate3d(-30px, -120px, 0) scale(0.9);
+  }
+  75% {
+    transform: translate3d(50px, -175px, 0) scale(1.25);
+  }
+  100% {
+    transform: translate3d(15px, -240px, 0) scale(0.8);
+  }
+}
+
+@keyframes fireflyFloat2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  30% {
+    transform: translate3d(-45px, -65px, 0) scale(0.85);
+  }
+  60% {
+    transform: translate3d(35px, -140px, 0) scale(1.2);
+  }
+  85% {
+    transform: translate3d(-25px, -205px, 0) scale(0.9);
+  }
+  100% {
+    transform: translate3d(0, -270px, 0) scale(1);
+  }
+}
+
+@keyframes fireflyFloat3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.75);
+  }
+  35% {
+    transform: translate3d(55px, -75px, 0) scale(1.25);
+  }
+  70% {
+    transform: translate3d(-40px, -150px, 0) scale(0.85);
+  }
+  100% {
+    transform: translate3d(30px, -240px, 0) scale(0.75);
+  }
+}
+
+@keyframes fireflyFloat4 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.1);
+  }
+  20% {
+    transform: translate3d(-35px, -50px, 0) scale(0.8);
+  }
+  50% {
+    transform: translate3d(45px, -105px, 0) scale(1.3);
+  }
+  80% {
+    transform: translate3d(-20px, -180px, 0) scale(0.95);
+  }
+  100% {
+    transform: translate3d(20px, -260px, 0) scale(1.05);
+  }
+}
+
+/* Nhịp phát sáng đom đóm (nhấp nháy tăng giảm độ sáng) */
+@keyframes fireflyGlow {
+  0%, 100% {
+    opacity: 0.1;
+    filter: brightness(0.8);
+  }
+  20% {
+    opacity: 0.95;
+    filter: brightness(1.5);
+  }
+  45% {
+    opacity: 0.25;
+    filter: brightness(0.9);
+  }
+  70% {
+    opacity: 1;
+    filter: brightness(1.7);
+  }
+  85% {
+    opacity: 0.35;
+    filter: brightness(1);
+  }
+}
+
+/* 15 chú đom đóm rải khắp các khu vực màn hình */
+.firefly:nth-child(1)  { top: 20%; left: 10%; animation: fireflyFloat1 11s infinite ease-in-out, fireflyGlow 3.5s infinite ease-in-out; animation-delay: 0s, 0.2s; }
+.firefly:nth-child(2)  { top: 35%; left: 85%; animation: fireflyFloat2 13s infinite ease-in-out, fireflyGlow 4.2s infinite ease-in-out; animation-delay: 1.2s, 0.8s; width: 5px; height: 5px; }
+.firefly:nth-child(3)  { top: 58%; left: 22%; animation: fireflyFloat3 10s infinite ease-in-out, fireflyGlow 3.2s infinite ease-in-out; animation-delay: 2.5s, 1.5s; width: 7px; height: 7px; }
+.firefly:nth-child(4)  { top: 72%; left: 68%; animation: fireflyFloat4 14s infinite ease-in-out, fireflyGlow 4.8s infinite ease-in-out; animation-delay: 0.5s, 2s; }
+.firefly:nth-child(5)  { top: 15%; left: 62%; animation: fireflyFloat2 12s infinite ease-in-out, fireflyGlow 3.8s infinite ease-in-out; animation-delay: 3s, 0.4s; width: 5px; height: 5px; }
+.firefly:nth-child(6)  { top: 88%; left: 14%; animation: fireflyFloat1 15s infinite ease-in-out, fireflyGlow 4.5s infinite ease-in-out; animation-delay: 1.8s, 2.5s; width: 8px; height: 8px; }
+.firefly:nth-child(7)  { top: 42%; left: 48%; animation: fireflyFloat3 9s infinite ease-in-out, fireflyGlow 3s infinite ease-in-out; animation-delay: 4s, 1s; width: 5px; height: 5px; }
+.firefly:nth-child(8)  { top: 78%; left: 38%; animation: fireflyFloat4 13s infinite ease-in-out, fireflyGlow 4s infinite ease-in-out; animation-delay: 2s, 3s; }
+.firefly:nth-child(9)  { top: 28%; left: 92%; animation: fireflyFloat1 11s infinite ease-in-out, fireflyGlow 3.6s infinite ease-in-out; animation-delay: 3.5s, 0.5s; width: 6px; height: 6px; }
+.firefly:nth-child(10) { top: 65%; left: 90%; animation: fireflyFloat2 14s infinite ease-in-out, fireflyGlow 4.6s infinite ease-in-out; animation-delay: 0.8s, 1.8s; width: 7px; height: 7px; }
+.firefly:nth-child(11) { top: 82%; left: 52%; animation: fireflyFloat3 12s infinite ease-in-out, fireflyGlow 3.4s infinite ease-in-out; animation-delay: 2.2s, 0.2s; width: 5px; height: 5px; }
+.firefly:nth-child(12) { top: 10%; left: 32%; animation: fireflyFloat4 10s infinite ease-in-out, fireflyGlow 3.9s infinite ease-in-out; animation-delay: 4.5s, 2.2s; width: 6px; height: 6px; }
+.firefly:nth-child(13) { top: 50%; left: 6%;  animation: fireflyFloat1 13s infinite ease-in-out, fireflyGlow 4.1s infinite ease-in-out; animation-delay: 1s, 1.2s; width: 7px; height: 7px; }
+.firefly:nth-child(14) { top: 94%; left: 82%; animation: fireflyFloat2 15s infinite ease-in-out, fireflyGlow 5s infinite ease-in-out; animation-delay: 3.2s, 3.5s; width: 5px; height: 5px; }
+.firefly:nth-child(15) { top: 32%; left: 4%;  animation: fireflyFloat3 11s infinite ease-in-out, fireflyGlow 3.7s infinite ease-in-out; animation-delay: 2.8s, 0.7s; width: 8px; height: 8px; }
+
+/* ==========================================================================
+   3. CÁC HIỆU ỨNG CHUYỂN ĐỘNG KHÁC (KEYFRAME ANIMATIONS)
+   ========================================================================== */
+@keyframes floatAvatar {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes rotateGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulseDot {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes floatOrb {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(35px, 25px) scale(1.15);
+  }
+}
+
+@keyframes shimmerTitle {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ==========================================================================
+   4. CHUẨN HÓA BOX MODEL + RESET CƠ BẢN
    ========================================================================== */
 *,
 *::before,
 *::after {
-  box-sizing: border-box;   /* width đã bao gồm padding + border → dễ tính toán */
+  box-sizing: border-box;
 }
 
 * {
@@ -60,8 +301,8 @@
 }
 
 html {
-  scroll-behavior: smooth;        /* cuộn mượt khi bấm nav */
-  -webkit-text-size-adjust: 100%; /* chống iOS tự phóng chữ */
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -70,12 +311,18 @@ body {
   line-height: var(--lh-base);
   color: var(--color-text);
   background: var(--color-bg);
-  overflow-x: hidden; /* LƯỚI AN TOÀN chống cuộn ngang; bố cục bên dưới vẫn tự đúng */
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 30%, rgba(236, 72, 153, 0.06) 0px, transparent 40%),
+    radial-gradient(at 0% 80%, rgba(6, 182, 212, 0.07) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.06) 0px, transparent 50%);
+  background-attachment: fixed;
 }
 
 img {
   display: block;
-  max-width: 100%;  /* ảnh không bao giờ tràn khung → không gây cuộn ngang */
+  max-width: 100%;
   height: auto;
 }
 
@@ -89,336 +336,812 @@ ul {
 }
 
 /* ==========================================================================
-   3. LAYOUT DÙNG LẠI – .container
+   5. LAYOUT DÙNG LẠI – .container & .section
    ========================================================================== */
 .container {
   width: 100%;
   max-width: var(--container-max);
   margin-inline: auto;
-  padding-inline: var(--space-2); /* lề ngang an toàn trên mobile */
+  padding-inline: var(--space-2);
 }
 
 .section {
   padding-block: var(--space-5);
+  position: relative;
 }
 
+/* Viền trên và dưới đồng màu, hài hòa, đồng đều giữa các khu vực */
 .section-muted {
-  background: var(--color-surface);
+  background: var(--color-surface-soft);
+  border-top: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .section-title {
   font-size: var(--fs-h2);
+  font-weight: 800;
+  letter-spacing: -0.02em;
   margin-bottom: var(--space-1);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 1.35em;
+  background: var(--grad-title-bar);
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
 }
 
 .section-sub {
   color: var(--color-text-soft);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-base);
 }
 
 /* ==========================================================================
-   4. HEADER + NAV (FLEXBOX)
-   Mobile: thương hiệu trên, menu xuống dòng và tự wrap → không tràn ngang.
+   6. HEADER + NAV (FLEXBOX)
    ========================================================================== */
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
+  transition: box-shadow var(--transition-normal);
 }
 
 .header-inner {
-  display: flex;             /* FLEXBOX */
-  flex-wrap: wrap;           /* cho phép xuống dòng trên màn hình hẹp */
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-1);
-  padding-block: var(--space-1);
+  padding-block: 0.75rem;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
-  font-weight: 700;
+  gap: 0.65rem;
+  font-weight: 800;
+  font-size: var(--fs-lg);
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  transition: transform var(--transition-bounce);
+}
+
+.brand:hover {
+  transform: scale(1.03);
 }
 
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 2rem;
-  height: 2rem;
+  width: 2.25rem;
+  height: 2.25rem;
   border-radius: var(--radius-sm);
-  background: var(--color-primary);
+  background: var(--grad-sunset);
   color: #fff;
   font-weight: 800;
+  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35);
+  transition: transform var(--transition-bounce);
 }
 
-/* Danh sách nav cũng là flex container */
+.brand:hover .brand-mark {
+  transform: rotate(-8deg);
+}
+
+.brand-name {
+  background: var(--grad-sunset);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: shimmerTitle 8s ease infinite;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+}
+
 .nav-list {
-  display: flex;            /* FLEXBOX cho thanh điều hướng */
+  display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: 0.5rem;
 }
 
 .nav-list a {
+  position: relative;
   display: inline-block;
-  padding: 0.25rem 0.25rem;
+  padding: 0.4rem 0.75rem;
   color: var(--color-text-soft);
-  font-weight: 500;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.nav-list a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  width: 60%;
+  height: 2.5px;
+  background: var(--grad-sunset);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--transition-normal);
 }
 
 .nav-list a:hover,
 .nav-list a:focus-visible {
   color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
+  background: rgba(238, 242, 255, 0.65);
+}
+
+.nav-list a:hover::after,
+.nav-list a:focus-visible::after {
+  transform: scaleX(1);
 }
 
 /* ==========================================================================
-   5. HERO / GIỚI THIỆU
-   Mobile: xếp dọc (text trên, avatar dưới). Desktop: 2 cột.
+   7. HERO / GIỚI THIỆU (AURORA MESH & MÀU SẮC RỰC RỠ)
    ========================================================================== */
 .hero {
   padding-block: var(--space-5);
-  background: linear-gradient(180deg, var(--color-surface), var(--color-bg));
+  position: relative;
+  overflow: hidden;
+}
+
+/* Đốm màu cực quang mờ phía sau Hero */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.2) 0%, rgba(6, 182, 212, 0.16) 45%, transparent 70%);
+  filter: blur(55px);
+  border-radius: 50%;
+  z-index: 0;
+  animation: floatOrb 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.18) 0%, rgba(245, 158, 11, 0.14) 45%, transparent 70%);
+  filter: blur(55px);
+  border-radius: 50%;
+  z-index: 0;
+  animation: floatOrb 15s ease-in-out infinite alternate-reverse;
+  pointer-events: none;
 }
 
 .hero-inner {
+  position: relative;
+  z-index: 1;
   display: flex;
-  flex-direction: column;     /* mobile-first: xếp dọc */
+  flex-direction: column;
   gap: var(--space-4);
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.95rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: #047857;
+  margin-bottom: var(--space-1);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-success);
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulseDot 2s infinite;
 }
 
 .eyebrow {
   color: var(--color-primary);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: var(--fs-sm);
+  letter-spacing: 0.12em;
+  font-size: var(--fs-xs);
 }
 
 .hero-title {
   font-size: var(--fs-h1);
+  font-weight: 800;
   line-height: 1.15;
-  margin-block: 0.25rem;
+  letter-spacing: -0.03em;
+  margin-block: 0.35rem;
+  background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 30%, #9333ea 60%, #ec4899 85%, #f59e0b 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerTitle 8s ease infinite;
 }
 
 .hero-role {
   font-size: var(--fs-lg);
-  color: var(--color-accent);
-  font-weight: 600;
+  font-weight: 700;
+  background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: var(--space-2);
 }
 
 .hero-desc {
   color: var(--color-text-soft);
-  max-width: 60ch;
+  max-width: 58ch;
+  margin-inline: auto;
   margin-bottom: var(--space-3);
+  font-size: var(--fs-base);
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
+  justify-content: center;
+}
+
+/* Avatar với hào quang rực rỡ xoay màu & float animation */
+.hero-avatar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: var(--space-2);
+}
+
+.hero-avatar-glow {
+  position: absolute;
+  inset: -16px;
+  background: var(--grad-avatar-glow);
+  background-size: 300% 300%;
+  filter: blur(24px);
+  border-radius: 40px;
+  z-index: 0;
+  animation: pulseGlow 4s ease-in-out infinite, rotateGradient 8s linear infinite;
 }
 
 .hero-avatar img {
-  border-radius: var(--radius);
-  /* box-shadow: var(--shadow); */
+  position: relative;
+  z-index: 1;
+  border-radius: var(--radius-lg);
+  border: 4px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 16px 36px -4px rgba(79, 70, 229, 0.25);
   width: 100%;
-  /* max-width: 260px; */
+  max-width: 260px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  animation: floatAvatar 5s ease-in-out infinite;
+  transition: transform var(--transition-normal);
+  object-position: center 25%; /* dời vùng hiển thị lên phía đầu/mặt */
 }
 
-/* --- Nút bấm --- */
+.hero-avatar:hover img {
+  transform: scale(1.03) rotate(1deg);
+}
+
+/* --- Nút bấm chung (.btn) --- */
 .btn {
-  display: inline-block;
-  padding: 0.7rem 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.6rem;
   border-radius: var(--radius-sm);
   font-weight: 600;
+  font-size: var(--fs-base);
   text-align: center;
-  transition: transform 0.12s, background 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+  transition: transform var(--transition-normal), background var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+  position: relative;
+  overflow: hidden;
 }
 
-.btn:active { transform: translateY(1px); }
+.btn:active {
+  transform: translateY(1px) scale(0.98);
+}
 
 .btn-primary {
-  background: var(--color-primary);
-  color: #fff;
-  box-shadow: var(--shadow);
+  background: var(--grad-sunset);
+  background-size: 200% auto;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 24px -4px rgba(236, 72, 153, 0.45);
 }
-.btn-primary:hover { background: var(--color-primary-dark); }
+
+.btn-primary:hover {
+  box-shadow: 0 12px 30px -2px rgba(236, 72, 153, 0.6);
+  transform: translateY(-2px);
+  background-position: 100% 50%;
+}
 
 .btn-outline {
-  border: 2px solid var(--color-primary);
-  color: var(--color-primary);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sm);
 }
-.btn-outline:hover { background: var(--color-chip); }
+
+.btn-outline:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: #f5f3ff;
+  transform: translateY(-2px);
+}
 
 /* ==========================================================================
-   6. KỸ NĂNG – chip tự wrap bằng flex
+   8. KỸ NĂNG (SKILLS) – MÀU SẮC ĐẶC TRƯNG TỪNG CÔNG NGHỆ
    ========================================================================== */
 .skill-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-1);
+  gap: 0.85rem;
 }
 
 .skill-chip {
-  background: var(--color-chip);
-  color: var(--color-primary-dark);
-  border: 1px solid var(--color-border);
-  padding: 0.5rem 0.9rem;
-  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1.5px solid var(--color-border);
+  padding: 0.65rem 1.2rem;
+  border-radius: var(--radius-full);
   font-size: var(--fs-sm);
   font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-bounce), box-shadow var(--transition-normal), border-color var(--transition-normal), color var(--transition-fast), background var(--transition-fast);
+  cursor: default;
+}
+
+.skill-chip svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform var(--transition-bounce);
+}
+
+.skill-chip:hover {
+  transform: translateY(-5px) scale(1.03);
+}
+
+.skill-chip:hover svg {
+  transform: rotate(10deg) scale(1.2);
+}
+
+/* Màu sắc rực rỡ riêng cho từng chip công nghệ */
+.skill-chip.chip-html:hover {
+  border-color: #f97316;
+  color: #c2410c;
+  background: #fff7ed;
+  box-shadow: 0 10px 22px -3px rgba(249, 115, 22, 0.3);
+}
+
+.skill-chip.chip-css:hover {
+  border-color: #0284c7;
+  color: #0369a1;
+  background: #f0f9ff;
+  box-shadow: 0 10px 22px -3px rgba(2, 132, 199, 0.3);
+}
+
+.skill-chip.chip-js:hover {
+  border-color: #eab308;
+  color: #a16207;
+  background: #fefce8;
+  box-shadow: 0 10px 22px -3px rgba(234, 179, 8, 0.32);
+}
+
+.skill-chip.chip-responsive:hover {
+  border-color: #0d9488;
+  color: #0f766e;
+  background: #f0fdfa;
+  box-shadow: 0 10px 22px -3px rgba(13, 148, 136, 0.3);
+}
+
+.skill-chip.chip-git:hover {
+  border-color: #f43f5e;
+  color: #be123c;
+  background: #fff1f2;
+  box-shadow: 0 10px 22px -3px rgba(244, 63, 94, 0.3);
+}
+
+.skill-chip.chip-figma:hover {
+  border-color: #8b5cf6;
+  color: #6d28d9;
+  background: #f5f3ff;
+  box-shadow: 0 10px 22px -3px rgba(139, 92, 246, 0.32);
 }
 
 /* ==========================================================================
-   7. DỰ ÁN – CSS GRID cho danh sách thẻ
-   Mobile: 1 cột. Tablet: 2 cột. Desktop: 3 cột.
+   9. DỰ ÁN (PROJECT CARDS VỚI ACCENT BAR ĐỒNG ĐIỆU)
    ========================================================================== */
 .project-grid {
-  display: grid;                       /* CSS GRID */
-  grid-template-columns: 1fr;          /* mobile-first: 1 cột */
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-3);
 }
 
 .card {
-  background: var(--color-bg);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  overflow: hidden;                    /* bo góc gọn cả ảnh */
+  overflow: hidden;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+  position: relative;
+}
+
+/* Đường sọc màu gradient trên đỉnh mỗi thẻ - đồng đều, hài hòa */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  z-index: 2;
+  transition: height var(--transition-fast);
+}
+
+.card-gemini::before {
+  background: var(--grad-gemini);
+}
+
+.card-tiktok::before {
+  background: var(--grad-tiktok);
+}
+
+.card-music::before {
+  background: var(--grad-spotify);
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+  transform: translateY(-8px);
+}
+
+.card:hover::before {
+  height: 6px;
+}
+
+.card:hover {
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 20px 38px -6px rgba(15, 23, 42, 0.12);
+}
+
+.card-media-wrapper {
+  overflow: hidden;
+  position: relative;
+  background: #f1f5f9;
+  aspect-ratio: 16 / 10;
 }
 
 .card-media {
   width: 100%;
-  aspect-ratio: 5 / 3;                 /* giữ tỉ lệ ảnh ổn định */
+  height: 100%;
   object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover .card-media {
+  transform: scale(1.08);
 }
 
 .card-body {
-  padding: var(--space-2);
+  padding: var(--space-3);
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  flex: 1;                             /* các thẻ cao bằng nhau trong grid */
+  gap: 0.6rem;
+  flex: 1;
 }
 
-.card-title { font-size: var(--fs-lg); }
+.card-title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--color-text);
+  transition: color var(--transition-fast);
+}
+
+.card-gemini:hover .card-title { color: #4f46e5; }
+.card-tiktok:hover .card-title { color: #ec4899; }
+.card-music:hover .card-title { color: #0d9488; }
 
 .card-desc {
   color: var(--color-text-soft);
   font-size: var(--fs-sm);
+  line-height: 1.6;
   flex: 1;
 }
 
 .tag-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.45rem;
+  margin-top: auto;
+  padding-top: var(--space-1);
 }
 
 .tag-list li {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--color-text-soft);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: 0.2rem 0.55rem;
-  border-radius: 999px;
+  color: var(--color-primary-dark);
+  background: var(--color-chip);
+  border: 1px solid rgba(79, 70, 229, 0.15);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+
+.card-gemini:hover .tag-list li {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.card-tiktok:hover .tag-list li {
+  background: #fdf2f8;
+  border-color: #fbcfe8;
+  color: #db2777;
+}
+
+.card-music:hover .tag-list li {
+  background: #f0fdfa;
+  border-color: #99f6e4;
+  color: #0f766e;
 }
 
 .card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   color: var(--color-primary);
   font-weight: 600;
   font-size: var(--fs-sm);
   margin-top: var(--space-1);
+  transition: color var(--transition-fast), gap var(--transition-fast);
+}
+
+.card-gemini .card-link { color: #4f46e5; }
+.card-tiktok .card-link { color: #db2777; }
+.card-music .card-link { color: #0d9488; }
+
+.card-link:hover {
+  gap: 0.65rem;
+}
+
+.card-link .arrow-icon {
+  transition: transform var(--transition-normal);
+}
+
+.card:hover .card-link .arrow-icon {
+  transform: translateX(4px);
 }
 
 /* ==========================================================================
-   8. LIÊN HỆ
+   10. LIÊN HỆ (CONTACT SECTION)
    ========================================================================== */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.contact-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-card-title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .contact-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 0.85rem;
 }
 
 .contact-list li {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1);
-  align-items: baseline;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-fast);
+}
+
+.contact-item-github:hover {
+  background: #f8fafc;
+  border-color: #334155;
+  transform: translateX(5px);
+}
+
+.contact-item-instagram:hover {
+  background: #fdf2f8;
+  border-color: #f472b6;
+  transform: translateX(5px);
+}
+
+.contact-item-facebook:hover {
+  background: #eff6ff;
+  border-color: #60a5fa;
+  transform: translateX(5px);
 }
 
 .contact-label {
-  min-width: 90px;
+  min-width: 85px;
   font-weight: 700;
-  color: var(--color-text);
+  font-size: var(--fs-sm);
+  color: var(--color-text-soft);
 }
 
-.contact-list a { color: var(--color-primary); }
-.contact-list a:hover { text-decoration: underline; }
+.contact-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  word-break: break-all;
+  transition: color var(--transition-fast);
+}
+
+.contact-item-github a { color: #1e293b; }
+.contact-item-instagram a { color: #db2777; }
+.contact-item-facebook a { color: #1d4ed8; }
+
+.contact-item-github:hover a { color: #000; text-decoration: underline; }
+.contact-item-instagram:hover a { color: #be185d; text-decoration: underline; }
+.contact-item-facebook:hover a { color: #1e40af; text-decoration: underline; }
+
+.contact-icon {
+  flex-shrink: 0;
+}
+
+.contact-item-github .contact-icon { color: #1e293b; }
+.contact-item-instagram .contact-icon { color: #db2777; }
+.contact-item-facebook .contact-icon { color: #1d4ed8; }
 
 /* ==========================================================================
-   9. FOOTER
+   11. FOOTER
    ========================================================================== */
 .site-footer {
   border-top: 1px solid var(--color-border);
   background: var(--color-surface);
   padding-block: var(--space-3);
+  margin-top: var(--space-4);
+  position: relative;
+  z-index: 10;
 }
 
 .footer-inner {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-1);
+  gap: var(--space-2);
   align-items: center;
   justify-content: space-between;
   color: var(--color-text-soft);
   font-size: var(--fs-sm);
 }
 
-.to-top { color: var(--color-primary); font-weight: 600; }
+.to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: var(--color-chip);
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.to-top:hover {
+  background: var(--grad-sunset);
+  color: #ffffff;
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(236, 72, 153, 0.35);
+}
 
 /* ==========================================================================
-   10. MEDIA QUERIES – nâng cấp theo breakpoint (mobile-first)
+   12. MEDIA QUERIES – nâng cấp theo breakpoint (mobile-first)
    ========================================================================== */
 
 /* ----- TABLET: ≥ 768px ----- */
 @media (min-width: 768px) {
   :root {
-    --fs-h1: 2.5rem;   /* 40px */
-    --fs-h2: 1.75rem;  /* 28px */
+    --fs-h1: 2.75rem;   /* 44px */
+    --fs-h2: 1.875rem;  /* 30px */
   }
 
-  .container { padding-inline: var(--space-3); }
+  .container {
+    padding-inline: var(--space-3);
+  }
 
   /* Hero chuyển sang 2 cột */
   .hero-inner {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    text-align: left;
   }
-  .hero-text { flex: 1; }
-  .hero-avatar img { max-width: 300px; }
+
+  .hero-text {
+    flex: 1;
+  }
+
+  .hero-desc {
+    margin-inline: 0;
+  }
+
+  .hero-actions {
+    justify-content: flex-start;
+  }
+
+  .hero-avatar {
+    flex-shrink: 0;
+    margin-top: 0;
+  }
+
+  .hero-avatar img {
+    max-width: 300px;
+  }
 
   /* Lưới dự án: 2 cột */
   .project-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Bố cục liên hệ: 2 cột */
+  .contact-layout {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -426,7 +1149,7 @@ ul {
 /* ----- DESKTOP: ≥ 1280px ----- */
 @media (min-width: 1280px) {
   :root {
-    --fs-h1: 3rem;     /* 48px */
+    --fs-h1: 3.25rem;     /* 52px */
   }
 
   /* Lưới dự án: 3 cột */
@@ -434,22 +1157,30 @@ ul {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .hero-avatar img { max-width: 340px; }
+  .hero-avatar img {
+    max-width: 340px;
+  }
 }
 
 /* ==========================================================================
-   11. HỖ TRỢ TIẾP CẬN & ƯA THÍCH NGƯỜI DÙNG
+   13. HỖ TRỢ TIẾP CẬN & TẮT HIỆU ỨNG (PREFERS-REDUCED-MOTION)
    ========================================================================== */
 :focus-visible {
-  outline: 3px solid var(--color-accent);
+  outline: 3px solid var(--color-primary-light);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
+  }
+
+  .fireflies-container {
+    display: none !important;
   }
 }
