@@ -43,3 +43,15 @@ Chỉ thêm mục khi có thay đổi lớn ảnh hưởng đến chức năng, 
 - **Nội dung:** Di chuyển khối animation showcase (`.animation-showcase`, `.demo-stage`, `.box`) từ section Liên hệ lên nằm ngay dưới 3 thẻ trong section "Dự án tiêu biểu"; đồng bộ hóa màu 2 đường viền trên/dưới của section Dự án (`border-top` & `border-bottom` dùng chung `var(--color-border-subtle)` mềm mại); tinh chỉnh màu sắc các dải viền accent trên đầu các thẻ dự án và khối animation showcase theo gam màu chủ đạo hài hòa, liền mạch.
 - **Tệp liên quan:** `index.html`, `assets/css/styles.css`
 - **Kiểm tra:** `git diff --check` hoàn tất; cấu trúc section Dự án và Liên hệ hiển thị cân đối, không phát hiện lỗi vỡ layout.
+
+### 2026-11-06 — Bổ sung và tối ưu hiệu ứng viền màu chạy quanh ảnh (Border Beam)
+
+- **Nội dung:** Khắc phục lỗi nền trắng che phủ lớp viền xoay; nâng cấp độ dày viền lên 6px sắc nét; sử dụng dải màu neon quang phổ đầy đủ (*Neon Pink, Purple, Electric Blue, Cyan, Orange, Gold*); nhúng trực tiếp vào `<style>` của `index.html` và thêm cache-busting `?v=2.1` để hiệu ứng hiển thị tức thì, rực rỡ và chạy liên tục 360 độ quanh ảnh đại diện.
+- **Tệp liên quan:** `index.html`, `assets/css/styles.css`
+- **Kiểm tra:** `git diff --check` hoàn tất; viền màu hiển thị rõ ràng và tăng tốc xoay khi hover.
+
+### 2026-11-06 — Mở rộng viền màu chạy quanh toàn bộ các ảnh dự án
+
+- **Nội dung:** Mở rộng hiệu ứng viền chạy đa sắc liên tục cho toàn bộ ảnh dự án (`.card-media-wrapper` kết hợp `conic-gradient`); mỗi dự án sở hữu dải màu nhận diện riêng (Gemini: dải màu Google AI; TikTok: dải màu Cyberpunk Pink & Cyan; Spotify: dải màu Electric Emerald); viền dày 5px sắc nét với viền trắng trong ngăn cách và khả năng tăng tốc xoay lên 1.8s khi rê chuột.
+- **Tệp liên quan:** `index.html`, `assets/css/styles.css`
+- **Kiểm tra:** `git diff --check` hoàn tất không phát hiện lỗi định dạng; hiệu ứng hoạt động trơn tru trên cả 3 thẻ dự án.
